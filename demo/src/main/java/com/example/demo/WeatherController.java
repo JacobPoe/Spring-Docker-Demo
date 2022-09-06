@@ -36,7 +36,43 @@ public class WeatherController {
 	@CrossOrigin(origins = "http://localhost:9000")
 	@GetMapping(path="/weather", produces="application/json")
 	public String GetWeatherCurrent(@RequestParam String lat, @RequestParam String lon) throws IOException {
-		String url = "http://api.openweathermap.org/data/2.5/weather?" +
+		String url = "https://api.openweathermap.org/data/2.5/weather?" +
+		"lat=" + lat +
+		"&lon=" + lon + 
+		"&appid=" + this.key +
+		"&units=" + this.units;
+
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpUriRequest httpUriRequest = new HttpGet(url);
+		HttpResponse response = client.execute(httpUriRequest);
+		
+		String json = EntityUtils.toString(response.getEntity());
+				
+		return json;
+	}	
+	
+	@CrossOrigin(origins = "http://localhost:9000")
+	@GetMapping(path="/weather/forecast", produces="application/json")
+	public String GetWeatherForecast(@RequestParam String lat, @RequestParam String lon) throws IOException {
+		String url = "https://api.openweathermap.org/data/2.5/forecast?" +
+		"lat=" + lat +
+		"&lon=" + lon + 
+		"&appid=" + this.key +
+		"&units=" + this.units;
+
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpUriRequest httpUriRequest = new HttpGet(url);
+		HttpResponse response = client.execute(httpUriRequest);
+		
+		String json = EntityUtils.toString(response.getEntity());
+				
+		return json;
+	}	
+	
+	@CrossOrigin(origins = "http://localhost:9000")
+	@GetMapping(path="/weather/stats", produces="application/json")
+	public String GetWeatherStats(@RequestParam String lat, @RequestParam String lon) throws IOException {
+		String url = "https://history.openweathermap.org/data/2.5/aggregated/year?" +
 		"lat=" + lat +
 		"&lon=" + lon + 
 		"&appid=" + this.key +
